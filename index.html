@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mustafa Ülger | Meta Reklam Yönetimi & Dijital Büyüme Danışmanı</title>
+  <meta name="description" content="8 yıllık saha tecrübesi ve akademik reklamcılık altyapısıyla bütçenizi kârlı satışa dönüştüren yüksek performanslı Meta ve Instagram reklam yönetimi." />
+  
+  <!-- Google Fonts & Chart.js CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#F0F6FF',
+              100: '#E0EDFF',
+              500: '#0062FF',
+              600: '#0052D6',
+              700: '#003EB0',
+              900: '#09152E',
+              accent: '#00D8F6',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --bg-main: #F8FAFC;
+      --bg-card: rgba(255, 255, 255, 0.88);
+      --border-card: rgba(0, 98, 255, 0.12);
+      --text-main: #0F172A;
+      --text-muted: #475569;
+    }
+
+    .dark {
+      --bg-main: #070B14;
+      --bg-card: rgba(15, 23, 42, 0.80);
+      --border-card: rgba(255, 255, 255, 0.1);
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      transition: background-color 0.3s ease-out, color 0.4s ease;
+    }
+
+    .glass-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-card);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #0062FF 0%, #00D8F6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .gradient-bg {
+      background: linear-gradient(135deg, #0062FF 0%, #003EB0 100%);
+    }
+
+    /* Chart Container Strict Constraints */
+    .chart-container {
+      position: relative;
+      width: 100%;
+      max-width: 650px;
+      margin-left: auto;
+      margin-right: auto;
+      height: 290px;
+      max-height: 360px;
+    }
+    @media (min-width: 768px) {
+      .chart-container {
+        height: 320px;
+      }
+    }
+
+    /* Netlik Sahnesi Kapsayıcısı - Tam Arka Plan Bütünlüğü */
+    .netlik-stage-wrapper {
+      position: relative;
+      width: 100%;
+      min-height: 550px;
+      overflow: hidden;
+      touch-action: none;
+      border: none !important;
+      box-shadow: none !important;
+      border-radius: 1.5rem;
+      opacity: 0;
+      transform: translateY(20px) scale(0.99);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: none;
+    }
+
+    @media (min-width: 768px) {
+      .netlik-stage-wrapper {
+        min-height: 650px;
+      }
+    }
+
+    .netlik-stage-wrapper.stage-visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    #dynamicCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 20;
+    }
+
+    /* Fener İkonu ve Işık Halesi */
+    #flashlightCursor {
+      position: absolute;
+      pointer-events: none;
+      z-index: 30;
+      transform: translate(-50%, -50%) rotate(-235deg);
+      display: block;
+      width: 64px;
+      height: 64px;
+      font-size: 44px;
+      text-align: center;
+      line-height: 64px;
+      filter: drop-shadow(0 0 20px rgba(255, 230, 80, 0.95));
+      transition: opacity 0.2s ease;
+    }
+
+    #flashlightCursor::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 440px;
+      height: 440px;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(255, 225, 90, 0.48) 0%, rgba(255, 185, 30, 0.24) 42%, rgba(255, 160, 0, 0.06) 68%, transparent 80%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body class="font-sans antialiased selection:bg-brand-500 selection:text-white overflow-x-hidden">
+
+  <!-- Ambient Light Effects -->
+  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-brand-500/10 blur-[130px] pointer-events-none rounded-full -z-10"></div>
+
+  <!-- Header / Navigation -->
+  <header class="sticky top-0 z-50 glass-card border-b transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between gap-4">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-3 shrink-0">
+        <div class="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center text-white font-black text-lg tracking-tighter shadow-md shadow-brand-500/20">
+          MÜ
+        </div>
+        <div class="flex flex-col">
+          <span class="text-base font-extrabold tracking-tight flex items-center gap-2">
+            Mustafa Ülger <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          </span>
+          <span class="text-xs text-brand-500 font-semibold tracking-wide uppercase">Meta Ads & Büyüme Uzmanı</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden lg:flex items-center gap-7 text-sm font-bold text-slate-600 dark:text-slate-300 whitespace-nowrap">
+        <a href="#netlik-deneyimi" class="hover:text-brand-500 transition-colors">Netlik Deneyimi</a>
+        <a href="#roas-engine" class="hover:text-brand-500 transition-colors">ROAS Simülatörü</a>
+        <a href="#kiyaslama" class="hover:text-brand-500 transition-colors">Neden Ben?</a>
+        <a href="#hizmetler" class="hover:text-brand-500 transition-colors">Hizmetler</a>
+        <a href="#hakkimda" class="hover:text-brand-500 transition-colors">Hakkımda</a>
+      </nav>
+
+      <!-- Theme Switcher & Main Call to Action -->
+      <div class="flex items-center gap-3 shrink-0">
+        <button id="themeToggleBtn" aria-label="Tema Değiştir" class="p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:scale-105 transition-all text-sm font-bold">
+          <span id="themeIcon">🌙</span>
+        </button>
+
+        <a href="https://wa.me/905
+MÜ 
+Mustafa Ülger Meta Ads & Büyüme Uzmanı 
+Netlik Deneyimi ROAS Simülatörü Neden Ben? Hizmetler Hakkımda 
+🌙 💬 Analiz Talep Et 
+8 Yıllık Saha Tecrübesi • Akademik Reklam Stratejisi 
+Reklam Bütçenizi Boşa Harcamayın. Veriye Dayalı Satış Odaklı Meta Ads. 
+Pazaryeri komisyonlarına mahkum kalmayın. E-ticaret siteleri, butikler, diyetisyenler ve klinikler için algoritma dostu, ölçülebilir ve kârlı Meta reklam sistemleri kuruyorum. 
+📊 ROAS Simülatörünü Dene ➔ 💬 WhatsApp Ön Analiz 
+Tecrübe
+8+ Yıl
+Saha Kampanya Yönetimi
+Akademik
+4. Sınıf
+Reklamcılık Lisans Eğitimi
+Hedef
+Net Kârlılık
+Sürdürülebilir ROAS
+Şeffaflık
+Birebir
+Doğrudan Uzman İletişimi
+Stratejik Şeffaflık
+Verilerinizdeki Belirsizliği Ortadan Kaldırın 
+🔦
+
+Reklam Harcamanızın Tam Karşılığını Görebiliyor Musunuz? 
+Çoğu işletme reklam verilerini sistemsiz bir sis perdesinin ardından izler. Sunucu taraflı CAPI takibi, gelişmiş piksel entegrasyonu ve doğru dönüşüm hunisi ile her 1 TL reklam bütçenizi kârlı satışa dönüştürüyoruz. 
+🚀 Büyüme Stratejisi Başlatın ➔ 
+📊 Şeffaf & Gerçekçi Dijital Büyüme Simülatörü 
+İşletmenizin Potansiyel Ciro ve ROAS Hesabı 
+Bu simülatör bölümünde; sektörünüzü, aylık reklam bütçenizi ve ortalama ürün/hizmet fiyatınızı seçerek tahmini ciro getirisi ile ROAS hedefinizi simüle edebilirsiniz. İsterseniz gelişmiş ayarlardan CPM ve CTR değerlerini değiştirerek anlık grafiği güncelleyebilirsiniz. 
+1. Sektörünüz
+              E-ticaret / Giyim / Butik (Ürün Satışı)
+              Diyetisyen / Klinik (Randevu / Müşteri)
+              Pazaryeri Satıcısı (Kendi Sitemize Geçiş)
+              Hizmet / B2B Danışmanlık
+             
+2. Aylık Reklam Bütçeniz: ₺25,000 
+3. Ortalama Ürün / Hizmet Fiyatı: ₺850 
+⚙️ Gelişmiş Metrik Ayarları (CPM & CTR) ▼
+CPM (Bin Gösterim Maliyeti): ₺65 
+CTR (Tıklama Oranı %): %1.80 
+4. Analiz Raporunun Gönderileceği E-Posta 
+Tahmini Ciro Getirisi ₺94,350 
+Gerçekçi Hedef ROAS 3.77x 
+🚀 Rapor Özeti & WhatsApp Analiz Talebi ➔
+* Simülasyon özetiniz hem WhatsApp hattınıza hem e-posta adresinize yönlendirilir. 
+Tahmini Gösterim 384,615 
+Tahmini Tıklama 6,923 
+Tahmini Sipariş / Lead 111 
+
+📌 Veri Mantığı ve Referans: Hesaplamalar hayali değildir. Meta Türkiye E-Ticaret ve Lead Generation Benchmark Raporları baz alınmıştır (Ortalama Dönüşüm Oranı %1.2 - %2.8 aralığında hesaplanır). Gerçek ROAS kârlılık oranları ürün marjınıza göre değişir. 
+Sistem Karşılaştırması
+Neden Reklam Bütçeniz Boşa Gidiyor? 
+Bu bölümde standart "Görseli Öne Çıkar" yöntemi ile Mustafa Ülger'in geliştirdiği veriye dayalı Meta Reklam Mühendisliği arasındaki farkları netleştirebilirsiniz. 
+Geleneksel / Hatalı Reklamcılık 
+✕ 
+"Öne Çıkar" Butonuna Basmak
+* ✕ Genel Hedefleme: Sadece dar ilgi alanlarına bel bağlayan, bütçeyi eriten kitleler. 
+* ✕ Piksel Verisizliği: Conversion API kurulmadığı için algoritmanın dönüşümleri görememesi. 
+* ✕ Yüksek Tıklama Maliyeti: Sıkıcı görseller ve zayıf metinler yüzünden fırlayan CPC oranları. 
+* ✕ Sonuç: Tıklama var ama satış yok! Düşük veya zararda ROAS. 
+⚠️ Reklam harcamanızın %50'den fazlası yanlış yapılandırma yüzünden boşa harcanır. 
+Mustafa Ülger Büyüme Sistemi 
+✓ 
+Veri & Psikoloji Odaklı Meta Mühendisliği
+* ✓ Dönüşüm Hunisi: Soğuk kitleyi ısındıran ve satın almaya yönlendiren Retargeting mimarisi. 
+* ✓ CAPI & Piksel Kurulumu: iOS kısıtlamalarını aşan tam sunucu taraflı veri takibi. 
+* ✓ A/B Kreatif Testleri: Reklam metni, hook video ve görsel varyasyonlarıyla yüksek CTR. 
+* ✓ Sonuç: Ölçülebilir ciro, kârlı ROAS ve sürdürülebilir işletme büyümesi. 
+🚀 Bütçeniz doğrudan en yüksek dönüşüm getiren kitleye ve görsele otomatik yönlenir. 
+Çözüm Paketleri
+İşletmenizin İhtiyacına Özel 3 Temel Hizmet 
+Bu bölümde karmaşık ajans sözleşmeleri olmadan, doğrudan sonuç odaklı 3 farklı hizmet modelimizi inceleyebilirsiniz. 
+01 
+Meta Reklam Yönetimi
+ROAS & Satış Odaklı
+Instagram ve Facebook reklamlarınızı teknik ve stratejik olarak kuruyor; piksel, CAPI ve kreatif testleriyle sürekli optimize ediyorum. 
+✓ Pixel & CAPI Sunucu Dönüşümü 
+✓ A/B Metin ve Görsel Testleri 
+✓ Retargeting (Yeniden Hedefleme) 
+✓ Haftalık Şeffaf Veri Raporu 
+Detaylı Bilgi & İletişim 
+En Çok Tercih Edilen 
+02 
+Sosyal Medya + Reklam
+Tam Kapsamlı Büyüme
+Instagram hesabınızı hem güven veren estetik bir vitrine dönüştürüyor hem de reklamlarla hedeflenmiş binlerce potansiyel müşteriye ulaştırıyorum. 
+✓ Tüm Meta Reklam Yönetimi 
+✓ Aylık İçerik & Reels Planı 
+✓ Profil & Bio Optimizasyonu 
+✓ Rakip Analizi & Marka Konumlandırma 
+Bu Paketi Seç (WhatsApp) 
+03 
+Video & Reels Çekimi
+📍 Antalya İçi Özel Prodüksiyon
+Partner profesyonel kreatif ekibimizle işletmenize geliyor; reklamlarda yüksek tıklanma getiren senaryolu Reels çekimleri yapıyoruz. 
+✓ Tüketici Psikolojisine Uygun Senaryo 
+✓ Profesyonel Işık, Ses ve 4K Çekim 
+✓ Dinamik Kurgu & Altyazı Tasarımı 
+✓ Reklam Büyüme Odaklı Hook Kurguları 
+Çekim Randevusu Planla 
+Hikayem ve Bakış Açım
+Alaylı Pratik Tecrübe + Akademik Reklam Stratejisi 
+Mustafa Ülger'in saha tecrübesini ve lisans eğitimini harmanlayan danışmanlık yaklaşımını yakından tanıyın. 
+MÜ Mustafa Ülger Meta Ads & Büyüme Uzmanı 
+🎓 Reklamcılık 4. Sınıf 
+Yaklaşık 8 yıldır dijital pazarlama ve Meta reklamlarının mutfağındayım. E-ticaret sitelerinden yerel kliniklere, butiklerden diyetisyenlere kadar onlarca farklı kulvarda reklam yönettim. 
+Beni standart ajanslardan ayıran en büyük özellik; sahada edindiğim 8 yıllık tecrübeyi şu an son sınıfında olduğum Reklamcılık lisans eğitimi ile harmanlamamdır. İkna psikolojisini ve kreatif kurguyu ezbere değil, bilimsel temellerle uyguluyorum. 
+Birebir Temas
+Stajyerlerle değil, doğrudan uzmanla muhatap olursunuz.
+%100 Şeffaflık
+Reklam hesabınız ve verileriniz her zaman tamamen sizde kalır.
+Reklamlarınızı Birlikte Büyütelim 
+Formu doldurarak işletmenizin bilgilerini iletin; sistem otomatik olarak hazırlanmış büyüme stratejisi mesajını doğrudan WhatsApp hattıma yönlendirsin. 
+Adınız Soyadınız / Marka Adı 
+Sektörünüz
+                  E-ticaret / Butik
+                  Diyetisyen / Klinik
+                  Pazaryeri Satıcısı
+                  Hizmet / Danışmanlık
+                 
+E-Posta Adresiniz 
+Yaşadığınız En Büyük Problem 
+KVKK Aydınlatma Metni'ni ve kişisel verilerimin iletişime geçme amacıyla işlenmesini onaylıyorum. 
+💬 Analiz Talebini WhatsApp'a Gönder ➔ 
+MÜ 
+Mustafa Ülger
+Meta Ads & Dijital Büyüme Mimarisi
+Netlik Deneyimi ROAS Simülatörü Karşılaştırma Hizmetler Hakkımda 
+🛡️ 256-Bit SSL Şifreleme • ⚖️ KVKK 6698 Uyumlu • 📍 Antalya & Global Remote 
+Meta / Facebook Sorumluluk Reddi (Disclaimer): Bu web sitesi Facebook, Instagram veya Meta Platforms, Inc. ile doğrudan bağlı, ilişkili veya onaylanmış bir site değildir. Facebook ve Instagram, Meta Platforms, Inc.'in tescilli ticari markalarıdır. Sitede yer alan analizler ve tahminler sektörel ortalamalara dayanmaktadır. 
+© 2026 Mustafa Ülger. Tüm hakları saklıdır.
+KVKK Metni • Çerez Politikası • Kullanım Koşulları 
+💬 WhatsApp'tan Yazın
+Yasal Bilgilendirme
+✕ 
+
+Anladım ve Kapat 
+?text=Merhaba%20Mustafa%20Bey,%20web%20sitenizi%20inceledim.%20Reklam%20yönetimi%20hakkında%20görüşmek%20istiyorum." 
+           target="_blank"
+           class="inline-flex items-center gap-2 gradient-bg hover:opacity-95 text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-xl shadow-md shadow-brand-500/25 transition-all hover:-translate-y-0.5 whitespace-nowrap">
+          <span>💬</span>
+          <span>Analiz Talep Et</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative pt-12 pb-16 md:pt-20 md:pb-24 overflow-hidden">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center">
+      
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-500/20 bg-brand-500/10 text-brand-600 dark:text-brand-accent text-xs sm:text-sm font-bold mb-8">
+        <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+        8 Yıllık Saha Tecrübesi • Akademik Reklam Stratejisi
+      </div>
+
+      <h1 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight leading-[1.15] mb-8">
+        Reklam Bütçenizi Boşa Harcamayın.<br />
+        <span class="gradient-text">Veriye Dayalı Satış Odaklı</span> Meta Ads.
+      </h1>
+
+      <p class="max-w-3xl mx-auto text-base sm:text-xl text-slate-600 dark:text-slate-300 font-normal leading-relaxed mb-10">
+        Pazaryeri komisyonlarına mahkum kalmayın. E-ticaret siteleri, butikler, diyetisyenler ve klinikler için algoritma dostu, ölçülebilir ve kârlı Meta reklam sistemleri kuruyorum.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto mb-14">
+        <a href="#roas-engine" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 gradient-bg hover:opacity-95 text-white font-extrabold text-sm px-7 py-4 rounded-xl shadow-lg shadow-brand-500/30 transition-all hover:scale-105">
+          <span>📊 ROAS Simülatörünü Dene</span>
+          <span>➔</span>
+        </a>
+        <a href="https://wa.me/905396267015?text=Merhaba%20Mustafa%20Bey,%20reklam%20hesabım%20için%20ücretsiz%20ön%20analiz%20istiyorum." 
+           target="_blank" 
+           class="w-full sm:w-auto inline-flex items-center justify-center gap-2 glass-card text-slate-800 dark:text-white font-bold text-sm px-6 py-4 rounded-xl border transition-all hover:border-brand-500">
+          <span>💬 WhatsApp Ön Analiz</span>
+        </a>
+      </div>
+
+      <!-- Quick Metrics Cards -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-left max-w-4xl mx-auto">
+        <div class="glass-card p-5 rounded-2xl">
+          <div class="text-xs text-brand-500 font-bold uppercase tracking-wider mb-1">Tecrübe</div>
+          <div class="text-3xl font-black">8+ Yıl</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">Saha Kampanya Yönetimi</div>
+        </div>
+        <div class="glass-card p-5 rounded-2xl">
+          <div class="text-xs text-brand-500 font-bold uppercase tracking-wider mb-1">Akademik</div>
+          <div class="text-3xl font-black">4. Sınıf</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">Reklamcılık Lisans Eğitimi</div>
+        </div>
+        <div class="glass-card p-5 rounded-2xl">
+          <div class="text-xs text-brand-500 font-bold uppercase tracking-wider mb-1">Hedef</div>
+          <div class="text-3xl font-black text-emerald-500">Net Kârlılık</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">Sürdürülebilir ROAS</div>
+        </div>
+        <div class="glass-card p-5 rounded-2xl">
+          <div class="text-xs text-brand-500 font-bold uppercase tracking-wider mb-1">Şeffaflık</div>
+          <div class="text-3xl font-black">Birebir</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">Doğrudan Uzman İletişimi</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Netlik Deneyimi (Borderless Dynamic Canvas Engine) -->
+  <section id="netlik-deneyimi" class="py-16 md:py-24 relative overflow-hidden transition-all duration-300">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-10">
+        <span class="text-xs font-extrabold uppercase tracking-widest text-brand-500 block mb-2">Stratejik Şeffaflık</span>
+        <h2 class="text-3xl sm:text-5xl font-black tracking-tight transition-colors duration-300">
+          Verilerinizdeki Belirsizliği Ortadan Kaldırın
+        </h2>
+      </div>
+
+      <!-- Canvas Interactive Stage Container -->
+      <div id="netlikStage" class="netlik-stage-wrapper relative">
+        
+        <!-- Flashlight Cursor Icon -->
+        <div id="flashlightCursor">🔦</div>
+
+        <!-- Dynamic Overlay Canvas Layer -->
+        <canvas id="dynamicCanvas"></canvas>
+
+        <!-- Revealed Content Layer Underneath -->
+        <div class="w-full h-full min-h-[550px] md:min-h-[650px] bg-[#070B14] text-white p-8 sm:p-20 flex flex-col items-center justify-center text-center relative z-10 select-none">
+          <h3 class="text-3xl sm:text-5xl md:text-6xl font-black max-w-4xl leading-[1.15] mb-8 tracking-tight text-white">
+            Reklam Harcamanızın Tam Karşılığını Görebiliyor Musunuz?
+          </h3>
+
+          <p class="max-w-3xl text-slate-300 text-base sm:text-xl leading-relaxed mb-10 font-normal">
+            Çoğu işletme reklam verilerini sistemsiz bir sis perdesinin ardından izler. Sunucu taraflı <strong class="text-brand-accent font-extrabold">CAPI takibi</strong>, gelişmiş piksel entegrasyonu ve doğru dönüşüm hunisi ile her 1 TL reklam bütçenizi kârlı satışa dönüştürüyoruz.
+          </p>
+
+          <!-- Fully Clickable and Accessible Button -->
+          <a id="revealActionBtn"
+             href="https://wa.me/905396267015?text=Merhaba%20Mustafa%20Bey,%20reklamlarımdaki%20sis%20perdesini%20kaldırmak%20ve%20net%20stratejiye%20geçmek%20istiyorum." 
+             target="_blank" 
+             class="inline-flex items-center gap-3 gradient-bg text-white font-extrabold text-lg px-9 py-4.5 rounded-2xl shadow-2xl shadow-brand-500/50 transition-all duration-200 cursor-pointer pointer-events-auto">
+            <span>🚀 Büyüme Stratejisi Başlatın</span>
+            <span>➔</span>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive ROAS & Growth Simulator -->
+  <section id="roas-engine" class="py-20 relative overflow-hidden transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      
+      <!-- Section Intro Paragraph -->
+      <div class="text-center max-w-3xl mx-auto mb-10">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-accent text-xs font-bold uppercase tracking-wider mb-3">
+          📊 Şeffaf & Gerçekçi Dijital Büyüme Simülatörü
+        </div>
+        <h2 class="text-3xl sm:text-5xl font-black tracking-tight">
+          İşletmenizin Potansiyel Ciro ve ROAS Hesabı
+        </h2>
+        <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base mt-3 leading-relaxed">
+          Bu simülatör bölümünde; sektörünüzü, aylık reklam bütçenizi ve ortalama ürün/hizmet fiyatınızı seçerek tahmini ciro getirisi ile ROAS hedefinizi simüle edebilirsiniz. İsterseniz gelişmiş ayarlardan CPM ve CTR değerlerini değiştirerek anlık grafiği güncelleyebilirsiniz.
+        </p>
+      </div>
+
+      <div class="glass-card rounded-3xl p-6 sm:p-10 shadow-xl grid lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left Control Panel -->
+        <div class="lg:col-span-5 space-y-5">
+          
+          <!-- Sector Select -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-2">1. Sektörünüz</label>
+            <select id="simSector" class="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-white font-medium focus:outline-none focus:border-brand-500 transition-colors text-sm">
+              <option value="ecommerce">E-ticaret / Giyim / Butik (Ürün Satışı)</option>
+              <option value="dietitian">Diyetisyen / Klinik (Randevu / Müşteri)</option>
+              <option value="marketplace">Pazaryeri Satıcısı (Kendi Sitemize Geçiş)</option>
+              <option value="service">Hizmet / B2B Danışmanlık</option>
+            </select>
+          </div>
+
+          <!-- Monthly Budget Slider -->
+          <div>
+            <div class="flex justify-between text-xs font-bold text-slate-600 dark:text-slate-300 mb-2">
+              <span>2. Aylık Reklam Bütçeniz:</span>
+              <span id="simBudgetValue" class="text-brand-500 font-black text-sm">₺25,000</span>
+            </div>
+            <input type="range" id="simBudgetInput" min="5000" max="150000" step="2500" value="25000" class="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-brand-500">
+          </div>
+
+          <!-- Product / Service Price Slider -->
+          <div>
+            <div class="flex justify-between text-xs font-bold text-slate-600 dark:text-slate-300 mb-2">
+              <span>3. Ortalama Ürün / Hizmet Fiyatı:</span>
+              <span id="simPriceValue" class="text-brand-500 font-black text-sm">₺850</span>
+            </div>
+            <input type="range" id="simPriceInput" min="100" max="10000" step="50" value="850" class="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-brand-500">
+          </div>
+
+          <!-- Advanced Metric Settings Collapsible -->
+          <div class="border border-slate-200 dark:border-slate-800 rounded-xl p-4 bg-slate-50 dark:bg-slate-900/50">
+            <button type="button" id="toggleAdvanced" class="w-full flex justify-between items-center text-xs font-bold text-brand-500 uppercase tracking-wider">
+              <span>⚙️ Gelişmiş Metrik Ayarları (CPM & CTR)</span>
+              <span id="advancedArrow">▼</span>
+            </button>
+            
+            <div id="advancedBox" class="hidden mt-4 space-y-4 pt-3 border-t border-slate-200 dark:border-slate-800">
+              <div>
+                <div class="flex justify-between text-xs text-slate-600 dark:text-slate-300 mb-1">
+                  <span> CPM (Bin Gösterim Maliyeti):</span>
+                  <span id="cpmValue" class="font-bold text-slate-900 dark:text-white">₺65</span>
+                </div>
+                <input type="range" id="cpmInput" min="20" max="180" step="5" value="65" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-brand-500">
+              </div>
+              <div>
+                <div class="flex justify-between text-xs text-slate-600 dark:text-slate-300 mb-1">
+                  <span> CTR (Tıklama Oranı %):</span>
+                  <span id="ctrValue" class="font-bold text-slate-900 dark:text-white">%1.80</span>
+                </div>
+                <input type="range" id="ctrInput" min="0.5" max="4.0" step="0.1" value="1.8" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-brand-500">
+              </div>
+            </div>
+          </div>
+
+          <!-- Email Input -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1.5">4. Analiz Raporunun Gönderileceği E-Posta</label>
+            <input type="email" id="simEmail" placeholder="ornek@isletmeniz.com" required class="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-brand-500 text-sm">
+          </div>
+
+          <!-- Summary Highlights -->
+          <div class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+            <div class="grid grid-cols-2 gap-4 text-center">
+              <div>
+                <span class="text-[11px] text-slate-500 dark:text-slate-400 block mb-1">Tahmini Ciro Getirisi</span>
+                <span id="simRevenueResult" class="text-xl sm:text-2xl font-black text-brand-500">₺94,350</span>
+              </div>
+              <div>
+                <span class="text-[11px] text-slate-500 dark:text-slate-400 block mb-1">Gerçekçi Hedef ROAS</span>
+                <span id="simRoasResult" class="text-xl sm:text-2xl font-black text-emerald-500">3.77x</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button id="simSubmitBtn" class="w-full py-4 rounded-xl gradient-bg hover:opacity-95 text-white font-extrabold text-sm shadow-lg shadow-brand-500/25 transition-all flex items-center justify-center gap-2">
+            <span>🚀 Rapor Özeti & WhatsApp Analiz Talebi</span>
+            <span>➔</span>
+          </button>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 text-center">
+            * Simülasyon özetiniz hem WhatsApp hattınıza hem e-posta adresinize yönlendirilir.
+          </p>
+
+        </div>
+
+        <!-- Right Side: Live Chart.js & Breakdown Cards -->
+        <div class="lg:col-span-7 flex flex-col justify-between h-full space-y-4">
+          
+          <div class="grid grid-cols-3 gap-3">
+            <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center">
+              <span class="text-[11px] text-slate-500 dark:text-slate-400 block">Tahmini Gösterim</span>
+              <span id="simImpressionResult" class="text-sm sm:text-base font-extrabold mt-0.5 block">384,615</span>
+            </div>
+            <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center">
+              <span class="text-[11px] text-slate-500 dark:text-slate-400 block">Tahmini Tıklama</span>
+              <span id="simClicksResult" class="text-sm sm:text-base font-extrabold mt-0.5 block">6,923</span>
+            </div>
+            <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center">
+              <span class="text-[11px] text-slate-500 dark:text-slate-400 block">Tahmini Sipariş / Lead</span>
+              <span id="simOrdersResult" class="text-sm sm:text-base font-extrabold text-emerald-500 mt-0.5 block">111</span>
+            </div>
+          </div>
+
+          <!-- Chart Container Constraint Div -->
+          <div class="chart-container bg-slate-100 dark:bg-slate-900/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+            <canvas id="growthChart"></canvas>
+          </div>
+
+          <!-- Benchmark Note -->
+          <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            <span class="text-brand-500 font-bold">📌 Veri Mantığı ve Referans:</span>
+            Hesaplamalar hayali değildir. <em>Meta Türkiye E-Ticaret ve Lead Generation Benchmark Raporları</em> baz alınmıştır (Ortalama Dönüşüm Oranı %1.2 - %2.8 aralığında hesaplanır). Gerçek ROAS kârlılık oranları ürün marjınıza göre değişir.
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Audit & Comparison Section -->
+  <section id="kiyaslama" class="py-20 border-t border-slate-200 dark:border-slate-800">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      
+      <!-- Section Intro Paragraph -->
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-xs font-bold uppercase tracking-widest text-brand-500 mb-3">Sistem Karşılaştırması</h2>
+        <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+          Neden Reklam Bütçeniz Boşa Gidiyor?
+        </h3>
+        <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base mt-3 leading-relaxed">
+          Bu bölümde standart "Görseli Öne Çıkar" yöntemi ile Mustafa Ülger'in geliştirdiği veriye dayalı Meta Reklam Mühendisliği arasındaki farkları netleştirebilirsiniz.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8 items-stretch">
+        
+        <!-- Flawed Method -->
+        <div class="glass-card p-8 rounded-3xl border-red-500/30 relative overflow-hidden flex flex-col justify-between">
+          <div class="absolute top-0 right-0 bg-red-500/10 text-red-500 text-xs font-extrabold px-4 py-1.5 rounded-bl-2xl uppercase tracking-wider">
+            Geleneksel / Hatalı Reklamcılık
+          </div>
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-red-500/10 text-red-500 flex items-center justify-center font-black text-2xl mb-6">
+              ✕
+            </div>
+            <h4 class="text-2xl font-bold mb-4">"Öne Çıkar" Butonuna Basmak</h4>
+            <ul class="space-y-3.5 text-sm text-slate-600 dark:text-slate-300 mb-6">
+              <li class="flex items-start gap-3">
+                <span class="text-red-500 font-bold">✕</span>
+                <span><strong>Genel Hedefleme:</strong> Sadece dar ilgi alanlarına bel bağlayan, bütçeyi eriten kitleler.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-red-500 font-bold">✕</span>
+                <span><strong>Piksel Verisizliği:</strong> Conversion API kurulmadığı için algoritmanın dönüşümleri görememesi.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-red-500 font-bold">✕</span>
+                <span><strong>Yüksek Tıklama Maliyeti:</strong> Sıkıcı görseller ve zayıf metinler yüzünden fırlayan CPC oranları.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-red-500 font-bold">✕</span>
+                <span><strong>Sonuç:</strong> Tıklama var ama satış yok! Düşük veya zararda ROAS.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="p-4 rounded-xl bg-red-500/5 border border-red-500/20 text-xs text-red-600 dark:text-red-300 font-medium">
+            ⚠️ Reklam harcamanızın %50'den fazlası yanlış yapılandırma yüzünden boşa harcanır.
+          </div>
+        </div>
+
+        <!-- Mustafa Ülger Growth System -->
+        <div class="glass-card p-8 rounded-3xl border-2 border-brand-500 shadow-xl relative overflow-hidden flex flex-col justify-between">
+          <div class="absolute top-0 right-0 gradient-bg text-white text-xs font-extrabold px-4 py-1.5 rounded-bl-2xl uppercase tracking-wider">
+            Mustafa Ülger Büyüme Sistemi
+          </div>
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-brand-500/10 text-brand-500 flex items-center justify-center font-black text-2xl mb-6">
+              ✓
+            </div>
+            <h4 class="text-2xl font-bold mb-4">Veri & Psikoloji Odaklı Meta Mühendisliği</h4>
+            <ul class="space-y-3.5 text-sm text-slate-700 dark:text-slate-200 mb-6">
+              <li class="flex items-start gap-3">
+                <span class="text-brand-500 font-bold">✓</span>
+                <span><strong>Dönüşüm Hunisi:</strong> Soğuk kitleyi ısındıran ve satın almaya yönlendiren Retargeting mimarisi.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-brand-500 font-bold">✓</span>
+                <span><strong>CAPI & Piksel Kurulumu:</strong> iOS kısıtlamalarını aşan tam sunucu taraflı veri takibi.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-brand-500 font-bold">✓</span>
+                <span><strong>A/B Kreatif Testleri:</strong> Reklam metni, hook video ve görsel varyasyonlarıyla yüksek CTR.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-brand-500 font-bold">✓</span>
+                <span><strong>Sonuç:</strong> Ölçülebilir ciro, kârlı ROAS ve sürdürülebilir işletme büyümesi.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="p-4 rounded-xl bg-brand-500/10 border border-brand-500/30 text-xs text-brand-600 dark:text-brand-accent font-medium">
+            🚀 Bütçeniz doğrudan en yüksek dönüşüm getiren kitleye ve görsele otomatik yönlenir.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="hizmetler" class="py-20 border-t border-slate-200 dark:border-slate-800">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      
+      <!-- Section Intro Paragraph -->
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-xs font-bold uppercase tracking-widest text-brand-500 mb-3">Çözüm Paketleri</h2>
+        <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+          İşletmenizin İhtiyacına Özel 3 Temel Hizmet
+        </h3>
+        <p class="text-slate-600 dark:text-slate-400 text-sm mt-3 leading-relaxed">
+          Bu bölümde karmaşık ajans sözleşmeleri olmadan, doğrudan sonuç odaklı 3 farklı hizmet modelimizi inceleyebilirsiniz.
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-8">
+        
+        <!-- Package 1 -->
+        <div class="glass-card rounded-3xl p-8 flex flex-col justify-between hover:border-brand-500/50 transition-all group">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-brand-500/10 text-brand-500 flex items-center justify-center font-black text-xl mb-6 group-hover:scale-110 transition-transform">
+              01
+            </div>
+            <h4 class="text-2xl font-bold mb-2">Meta Reklam Yönetimi</h4>
+            <p class="text-xs font-semibold text-brand-500 uppercase tracking-wider mb-4">ROAS & Satış Odaklı</p>
+            <p class="text-slate-600 dark:text-slate-400 text-sm mb-6 leading-relaxed">
+              Instagram ve Facebook reklamlarınızı teknik ve stratejik olarak kuruyor; piksel, CAPI ve kreatif testleriyle sürekli optimize ediyorum.
+            </p>
+            <div class="border-t border-slate-200 dark:border-slate-800 pt-6 mb-8 space-y-3 text-sm text-slate-700 dark:text-slate-300">
+              <div class="flex items-center gap-2.5">
+                <span class="text-emerald-500 font-bold">✓</span> Pixel & CAPI Sunucu Dönüşümü
+              </div>
+              <div class="flex items-center gap-2.5">
+                <span class="text-emerald-500 font-bold">✓</span> A/B Metin ve Görsel Testleri
+              </div>
+              <div class="flex items-center gap-2.5">
+                <span class="text-emerald-500 font-bold">✓</span> Retargeting (Yeniden Hedefleme)
+              </div>
+              <div class="flex items-center gap-2.5">
+                <span class="text-emerald-500 font-bold">✓</span> Haftalık Şeffaf Veri Raporu
+              </div>
+            </div>
+          </div>
+          <a href="https://wa.me/905396267015?text=Merhaba,%20Meta%20Reklam%20Yönetimi%20hizmetiniz%20hakkında%20bilgi%20almak%20istiyorum." 
+             target="_blank" 
+             class="w-full py-3.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-brand-500 hover:text-white text-slate-800 dark:text-slate-200 font-bold text-sm text-center transition-all">
+            Detaylı Bilgi & İletişim
+          </a>
+        </div>
+
+        <!-- Package 2 (Featured) -->
+        <div class="glass-card rounded-3xl p-8 border-2 border-brand-500 shadow-2xl relative flex flex-col justify-between">
+          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 gradient-bg text-white text-[11px] font-black px-4 py-1 rounded-full uppercase tracking-wider">
+            En Çok Tercih Edilen
+          </div>
+          <div>
+            <div class="w-12 h-12 rounded-2xl gradient-bg text-white flex items-center justify-center font-black text-xl mb-6">
+              02
+            </div>
+            <h4 class="text-2xl font-bold mb-2">Sosyal Medya + Reklam</h4>
+            <p class="text-xs font-semibold text-brand-500 uppercase tracking-wider mb-4">Tam Kapsamlı Büyüme</p>
+            <p class="text-slate-600 dark:text-slate-300 text-sm mb-6 leading-relaxed">
+              Instagram hesabınızı hem güven veren estetik bir vitrine dönüştürüyor hem de reklamlarla hedeflenmiş binlerce potansiyel müşteriye ulaştırıyorum.
+            </p>
+            <div class="border-t border-slate-200 dark:border-slate-800 pt-6 mb-8 space-y-3 text-sm text-slate-700 dark:text-slate-200">
+              <div class="flex items-center gap-2.5">
+                <span class="text-emerald-500 font-bold">✓</span> Tüm Meta Reklam Yönetimi
+              </div>
+              <div class="flex items-center gap-2.5">
+                <span class="text-emerald-500 font-bold">✓</span> Aylık İçerik & Reels Planı
+              </div>
+              <div class="flex items-center gap-2.5">
+                <span class="text-emerald-500 font-bold">✓</span> Profil & Bio Optimizasyonu
+              </div>
+              <div class="flex items-center gap-2.5">
+                <span class="text-emerald-500 font-bold">✓</span> Rakip Analizi & Marka Konumlandırma
+              </div>
+            </div>
+          </div>
+          <a href="https://wa.me/905396267015?text=Merhaba,%20Sosyal%20Medya%20+%20Reklam%20paketinizle%20ilgileniyorum." 
+             target="_blank" 
+             class="w-full py-3.5 rounded-xl gradient-bg hover:opacity-95 text-white font-bold text-sm text-center transition-all shadow-lg shadow-brand-500/30">
+            Bu Paketi Seç (WhatsApp)
+          </a>
+        </div>
+
+        <!-- Package 3 -->
+        <div class="glass-card rounded-3xl p-8 flex flex-col justify-between hover:border-brand-500/50 transition-all group">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-brand-500/10 text-brand-500 flex items-center justify-center font-black text-xl mb-6 group-hover:scale-110 transition-transform">
+              03
+            </div>
+            <h4 class="text-2xl font-bold mb-2">Video & Reels Çekimi</h4>
+            <p class="text-xs font-semibold text-brand-500 uppercase tracking-wider mb-4">📍 Antalya İçi Özel Prodüksiyon</p>
+            <p class="text-slate-600 dark:text-slate-400 text-sm mb-6 leading-relaxed">
+              Partner profesyonel kreatif ekibimizle işletmenize geliyor; reklamlarda yüksek tıklanma getiren senaryolu Reels çekimleri yapıyoruz.
+            </p>
+            <div class="border-t border-slate-200 dark:border-slate-800 pt-6 mb-8 space-y-3 text-sm text-slate-700 dark:text-slate-300">
+              <div class="flex items-center gap-2.5">
+                <span class="text-emerald-500 font-bold">✓</span> Tüketici Psikolojisine Uygun Senaryo
+              </div>
+              <div class="flex items-center gap-2.5">
+                <span class="text-emerald-500 font-bold">✓</span> Profesyonel Işık, Ses ve 4K Çekim
+              </div>
+              <div class="flex items-center gap-2.5">
+                <span class="text-emerald-500 font-bold">✓</span> Dinamik Kurgu & Altyazı Tasarımı
+              </div>
+              <div class="flex items-center gap-2.5">
+                <span class="text-emerald-500 font-bold">✓</span> Reklam Büyüme Odaklı Hook Kurguları
+              </div>
+            </div>
+          </div>
+          <a href="https://wa.me/905396267015?text=Merhaba,%20Antalya%20video%20ve%20Reels%20çekimi%20hakkında%20randevu%20almak%20istiyorum." 
+             target="_blank" 
+             class="w-full py-3.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-brand-500 hover:text-white text-slate-800 dark:text-slate-200 font-bold text-sm text-center transition-all">
+            Çekim Randevusu Planla
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="hakkimda" class="py-20 border-t border-slate-200 dark:border-slate-800">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      
+      <!-- Section Intro Paragraph -->
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <h2 class="text-xs font-bold uppercase tracking-widest text-brand-500 mb-2">Hikayem ve Bakış Açım</h2>
+        <h3 class="text-3xl font-extrabold tracking-tight">
+          Alaylı Pratik Tecrübe + Akademik Reklam Stratejisi
+        </h3>
+        <p class="text-slate-600 dark:text-slate-400 text-sm mt-3 leading-relaxed">
+          Mustafa Ülger'in saha tecrübesini ve lisans eğitimini harmanlayan danışmanlık yaklaşımını yakından tanıyın.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-12 gap-12 items-center">
+        
+        <div class="md:col-span-5 text-center">
+          <div class="relative inline-block">
+            <div class="w-60 h-60 sm:w-72 sm:h-72 rounded-3xl gradient-bg p-1.5 shadow-xl">
+              <div class="w-full h-full rounded-[22px] bg-white dark:bg-slate-950 flex flex-col items-center justify-center p-6 text-center">
+                <span class="text-6xl mb-2 font-black text-brand-500">MÜ</span>
+                <span class="font-extrabold text-xl">Mustafa Ülger</span>
+                <span class="text-xs text-slate-500 dark:text-slate-400 mt-1">Meta Ads & Büyüme Uzmanı</span>
+              </div>
+            </div>
+            <div class="absolute -bottom-4 -right-2 glass-card px-4 py-2 rounded-xl text-xs font-bold text-brand-500 shadow-lg">
+              🎓 Reklamcılık 4. Sınıf
+            </div>
+          </div>
+        </div>
+
+        <div class="md:col-span-7">
+          <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-sm mb-4">
+            Yaklaşık <strong>8 yıldır</strong> dijital pazarlama ve Meta reklamlarının mutfağındayım. E-ticaret sitelerinden yerel kliniklere, butiklerden diyetisyenlere kadar onlarca farklı kulvarda reklam yönettim.
+          </p>
+          <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-sm mb-6">
+            Beni standart ajanslardan ayıran en büyük özellik; sahada edindiğim 8 yıllık tecrübeyi şu an son sınıfında olduğum <strong>Reklamcılık lisans eğitimi</strong> ile harmanlamamdır. İkna psikolojisini ve kreatif kurguyu ezbere değil, bilimsel temellerle uyguluyorum.
+          </p>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="p-4 rounded-xl glass-card">
+              <div class="font-bold text-sm">Birebir Temas</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">Stajyerlerle değil, doğrudan uzmanla muhatap olursunuz.</div>
+            </div>
+            <div class="p-4 rounded-xl glass-card">
+              <div class="font-bold text-sm">%100 Şeffaflık</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">Reklam hesabınız ve verileriniz her zaman tamamen sizde kalır.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section & WhatsApp Integration with KVKK Checkbox -->
+  <section class="py-20 border-t border-slate-200 dark:border-slate-800">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+      <div class="glass-card rounded-3xl p-8 sm:p-12 border border-brand-500/30 shadow-2xl relative overflow-hidden">
+        
+        <!-- Section Intro Paragraph -->
+        <div class="max-w-2xl mx-auto text-center">
+          <h3 class="text-3xl sm:text-4xl font-black tracking-tight mb-4">
+            Reklamlarınızı Birlikte Büyütelim
+          </h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm mb-8 leading-relaxed">
+            Formu doldurarak işletmenizin bilgilerini iletin; sistem otomatik olarak hazırlanmış büyüme stratejisi mesajını doğrudan WhatsApp hattıma yönlendirsin.
+          </p>
+
+          <form id="contactForm" class="space-y-4 text-left">
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1.5">Adınız Soyadınız / Marka Adı</label>
+              <input type="text" id="contactName" required placeholder="Örn: Ayşe Yılmaz / Luna Butik" class="w-full px-4 py-3.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-brand-500 text-sm">
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1.5">Sektörünüz</label>
+                <select id="contactSector" class="w-full px-4 py-3.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 text-slate-800 dark:text-white focus:outline-none focus:border-brand-500 text-sm">
+                  <option value="E-ticaret / Butik">E-ticaret / Butik</option>
+                  <option value="Diyetisyen / Klinik">Diyetisyen / Klinik</option>
+                  <option value="Pazaryeri Satıcısı">Pazaryeri Satıcısı</option>
+                  <option value="Hizmet / Danışmanlık">Hizmet / Danışmanlık</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1.5">E-Posta Adresiniz</label>
+                <input type="email" id="contactEmail" required placeholder="ornek@marka.com" class="w-full px-4 py-3.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 text-slate-800 dark:text-white focus:outline-none focus:border-brand-500 text-sm">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1.5">Yaşadığınız En Büyük Problem</label>
+              <textarea id="contactMessage" rows="2" placeholder="Örn: Reklam veriyorum ama dönüşüm alamıyorum..." class="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-brand-500 text-sm"></textarea>
+            </div>
+
+            <!-- KVKK Checkbox Entegrasyonu -->
+            <div class="flex items-start gap-2.5 mt-3 pt-1">
+              <input type="checkbox" id="kvkkCheck" required class="mt-1 w-4 h-4 rounded border-slate-300 text-brand-500 focus:ring-brand-500 cursor-pointer">
+              <label for="kvkkCheck" class="text-[11px] text-slate-500 dark:text-slate-400 leading-snug cursor-pointer">
+                <a href="#" onclick="openLegalModal('kvkk'); return false;" class="underline font-semibold hover:text-brand-500">KVKK Aydınlatma Metni</a>'ni ve kişisel verilerimin iletişime geçme amacıyla işlenmesini onaylıyorum.
+              </label>
+            </div>
+
+            <button type="submit" class="w-full py-4 rounded-xl gradient-bg hover:opacity-95 text-white font-extrabold text-base shadow-lg shadow-brand-500/30 transition-all flex items-center justify-center gap-2">
+              <span>💬 Analiz Talebini WhatsApp'a Gönder</span>
+              <span>➔</span>
+            </button>
+          </form>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Redesigned Minimalist & Prestigious Footer -->
+  <footer class="pt-16 pb-12 border-t border-slate-200 dark:border-slate-900 bg-slate-100/60 dark:bg-[#060A12] transition-colors">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      
+      <!-- Top Brand Row -->
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-10 border-b border-slate-200 dark:border-slate-800/60">
+        <div class="flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-xl gradient-bg text-white font-black flex items-center justify-center text-sm shadow-md shadow-brand-500/20">
+            MÜ
+          </div>
+          <div>
+            <h5 class="text-sm font-extrabold text-slate-900 dark:text-white tracking-tight">Mustafa Ülger</h5>
+            <p class="text-xs text-brand-500 font-semibold">Meta Ads & Dijital Büyüme Mimarisi</p>
+          </div>
+        </div>
+
+        <!-- Quick Navigation Links -->
+        <div class="flex flex-wrap justify-center gap-6 text-xs font-semibold text-slate-600 dark:text-slate-400">
+          <a href="#netlik-deneyimi" class="hover:text-brand-500 transition-colors">Netlik Deneyimi</a>
+          <a href="#roas-engine" class="hover:text-brand-500 transition-colors">ROAS Simülatörü</a>
+          <a href="#kiyaslama" class="hover:text-brand-500 transition-colors">Karşılaştırma</a>
+          <a href="#hizmetler" class="hover:text-brand-500 transition-colors">Hizmetler</a>
+          <a href="#hakkimda" class="hover:text-brand-500 transition-colors">Hakkımda</a>
+        </div>
+      </div>
+
+      <!-- Legal Badges & Disclaimer Box -->
+      <div class="py-8 my-6 px-6 rounded-2xl bg-white/60 dark:bg-slate-900/40 border border-slate-200/80 dark:border-slate-800/80 text-center space-y-3">
+        <div class="flex flex-wrap items-center justify-center gap-2 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+          <span class="px-2.5 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">🛡️ 256-Bit SSL Şifreleme</span>
+          <span>•</span>
+          <span class="px-2.5 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">⚖️ KVKK 6698 Uyumlu</span>
+          <span>•</span>
+          <span class="px-2.5 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">📍 Antalya & Global Remote</span>
+        </div>
+        <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed max-w-3xl mx-auto">
+          <strong>Meta / Facebook Sorumluluk Reddi (Disclaimer):</strong> Bu web sitesi Facebook, Instagram veya Meta Platforms, Inc. ile doğrudan bağlı, ilişkili veya onaylanmış bir site değildir. Facebook ve Instagram, Meta Platforms, Inc.'in tescilli ticari markalarıdır. Sitede yer alan analizler ve tahminler sektörel ortalamalara dayanmaktadır.
+        </p>
+      </div>
+
+      <!-- Bottom Bar Links & Copyright -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 text-xs text-slate-500 dark:text-slate-400">
+        <p>© 2026 Mustafa Ülger. Tüm hakları saklıdır.</p>
+        <div class="flex items-center gap-4 font-semibold text-slate-600 dark:text-slate-300">
+          <a href="#" onclick="openLegalModal('kvkk'); return false;" class="hover:text-brand-500 transition-colors">KVKK Metni</a>
+          <span>•</span>
+          <a href="#" onclick="openLegalModal('cookie'); return false;" class="hover:text-brand-500 transition-colors">Çerez Politikası</a>
+          <span>•</span>
+          <a href="#" onclick="openLegalModal('terms'); return false;" class="hover:text-brand-500 transition-colors">Kullanım Koşulları</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Floating Sticky WhatsApp Button -->
+  <a href="https://wa.me/905396267015?text=Merhaba%20Mustafa%20Bey,%20web%20sitenizden%20ulaşıyorum.%20Meta%20reklamları%20hakkında%20bilgi%20almak%20istiyorum." 
+     target="_blank"
+     aria-label="WhatsApp İletişim" 
+     class="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-[#25D366] hover:bg-[#20ba59] text-white px-4 py-3.5 rounded-full shadow-2xl transition-transform hover:scale-110 active:scale-95">
+    <span class="text-xl">💬</span>
+    <span class="text-xs font-bold hidden sm:inline-block">WhatsApp'tan Yazın</span>
+  </a>
+
+  <!-- Interactive Legal Text Modal System -->
+  <div id="legalModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md">
+    <div class="glass-card max-w-2xl w-full max-h-[85vh] rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-2xl relative border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
+        <h4 id="modalTitle" class="text-lg font-black text-slate-900 dark:text-white">Yasal Bilgilendirme</h4>
+        <button onclick="closeLegalModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex items-center justify-center">✕</button>
+      </div>
+
+      <div id="modalBody" class="py-5 overflow-y-auto text-xs text-slate-600 dark:text-slate-300 leading-relaxed space-y-3 pr-2">
+        <!-- Content inserted dynamically -->
+      </div>
+
+      <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex justify-end">
+        <button onclick="closeLegalModal()" class="px-6 py-2.5 rounded-xl gradient-bg text-white font-extrabold text-xs">Anladım ve Kapat</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Interactive Engine -->
+  <script>
+    // -----------------------------------------------------------------
+    // 1. Theme Switcher (Light / Dark)
+    // -----------------------------------------------------------------
+    const htmlEl = document.documentElement;
+    const themeBtn = document.getElementById('themeToggleBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const netlikStage = document.getElementById('netlikStage');
+
+    let currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        htmlEl.classList.add('dark');
+        themeIcon.innerText = '☀️';
+      } else {
+        htmlEl.classList.remove('dark');
+        themeIcon.innerText = '🌙';
+      }
+      localStorage.setItem('theme', theme);
+      if (window.renderCanvasEngine) {
+        window.renderCanvasEngine();
+      }
+      handleScrollBackgroundTransition();
+    }
+
+    themeBtn.addEventListener('click', () => {
+      currentTheme = htmlEl.classList.contains('dark') ? 'light' : 'dark';
+      applyTheme(currentTheme);
+    });
+
+    applyTheme(currentTheme);
+
+    // -----------------------------------------------------------------
+    // 2. Scroll-driven Dynamic Background Transition (Fade to Dark & Back)
+    // -----------------------------------------------------------------
+    function handleScrollBackgroundTransition() {
+      if (htmlEl.classList.contains('dark')) {
+        document.body.style.backgroundColor = '';
+        return;
+      }
+
+      const stageSection = document.getElementById('netlik-deneyimi');
+      if (!stageSection) return;
+
+      const rect = stageSection.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      if (rect.top < windowHeight && rect.bottom > 0) {
+        const enterProgress = Math.min(1, Math.max(0, (windowHeight - rect.top) / (windowHeight * 0.55)));
+        const exitProgress = Math.min(1, Math.max(0, rect.bottom / (windowHeight * 0.55)));
+        
+        const factor = Math.min(enterProgress, exitProgress);
+        
+        const r = Math.round(248 + (7 - 248) * factor);
+        const g = Math.round(250 + (11 - 250) * factor);
+        const b = Math.round(252 + (20 - 252) * factor);
+
+        document.body.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+      } else {
+        document.body.style.backgroundColor = '';
+      }
+    }
+
+    window.addEventListener('scroll', handleScrollBackgroundTransition, { passive: true });
+
+    // -----------------------------------------------------------------
+    // 3. Unified Borderless Spotlight Canvas Engine & Click Passthrough
+    // -----------------------------------------------------------------
+    function initNetlikEngine() {
+      const canvas = document.getElementById('dynamicCanvas');
+      if (!canvas) return;
+
+      const container = canvas.parentElement;
+      const flashlightCursor = document.getElementById('flashlightCursor');
+      const actionBtn = document.getElementById('revealActionBtn');
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+      function renderBaseOverlay() {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.fillStyle = '#070B14'; // Seamless dark background match
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      function illuminateAt(x, y, radius = 210) {
+        ctx.save();
+        ctx.globalCompositeOperation = 'destination-out';
+        const maskGrad = ctx.createRadialGradient(x, y, radius * 0.15, x, y, radius);
+        maskGrad.addColorStop(0, 'rgba(0, 0, 0, 1)');
+        maskGrad.addColorStop(0.85, 'rgba(0, 0, 0, 1)');
+        maskGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+        ctx.fillStyle = maskGrad;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function resizeCanvas() {
+        canvas.width = container.clientWidth;
+        canvas.height = container.clientHeight;
+        renderBaseOverlay();
+      }
+
+      window.renderCanvasEngine = renderBaseOverlay;
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            netlikStage.classList.add('stage-visible');
+          }
+        });
+      }, { threshold: 0.15 });
+
+      observer.observe(netlikStage);
+
+      function getPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        let clientX = e.clientX;
+        let clientY = e.clientY;
+
+        if (e.touches && e.touches.length > 0) {
+          clientX = e.touches[0].clientX;
+          clientY = e.touches[0].clientY;
+        }
+
+        return {
+          x: clientX - rect.left,
+          y: clientY - rect.top,
+          clientX: clientX,
+          clientY: clientY
+        };
+      }
+
+      function checkButtonHover(clientX, clientY) {
+        if (!actionBtn) return false;
+        const rect = actionBtn.getBoundingClientRect();
+        const isInside = (
+          clientX >= rect.left && 
+          clientX <= rect.right && 
+          clientY >= rect.top && 
+          clientY <= rect.bottom
+        );
+
+        if (isInside) {
+          canvas.style.cursor = 'pointer';
+          actionBtn.classList.add('scale-105', 'shadow-brand-500', 'ring-4', 'ring-brand-accent/50');
+        } else {
+          canvas.style.cursor = 'none';
+          actionBtn.classList.remove('scale-105', 'shadow-brand-500', 'ring-4', 'ring-brand-accent/50');
+        }
+
+        return isInside;
+      }
+
+      function handleMove(e) {
+        const pos = getPos(e);
+        flashlightCursor.style.left = `${pos.x}px`;
+        flashlightCursor.style.top = `${pos.y}px`;
+        illuminateAt(pos.x, pos.y, 210);
+        checkButtonHover(pos.clientX, pos.clientY);
+      }
+
+      canvas.addEventListener('mousemove', handleMove);
+      canvas.addEventListener('touchmove', handleMove, { passive: true });
+
+      // Direct button click forwarding
+      canvas.addEventListener('click', (e) => {
+        if (actionBtn) {
+          const rect = actionBtn.getBoundingClientRect();
+          if (
+            e.clientX >= rect.left && 
+            e.clientX <= rect.right && 
+            e.clientY >= rect.top && 
+            e.clientY <= rect.bottom
+          ) {
+            const href = actionBtn.getAttribute('href');
+            if (href) {
+              window.open(href, '_blank');
+            }
+          }
+        }
+      });
+
+      // Direct touch support for mobile button tap
+      let lastTouchPos = null;
+      canvas.addEventListener('touchstart', (e) => {
+        const pos = getPos(e);
+        lastTouchPos = pos;
+        illuminateAt(pos.x, pos.y, 210);
+      });
+
+      canvas.addEventListener('touchend', () => {
+        if (lastTouchPos && actionBtn) {
+          const rect = actionBtn.getBoundingClientRect();
+          if (
+            lastTouchPos.clientX >= rect.left && 
+            lastTouchPos.clientX <= rect.right && 
+            lastTouchPos.clientY >= rect.top && 
+            lastTouchPos.clientY <= rect.bottom
+          ) {
+            const href = actionBtn.getAttribute('href');
+            if (href) {
+              window.open(href, '_blank');
+            }
+          }
+        }
+      });
+
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+    }
+
+    // -----------------------------------------------------------------
+    // 4. Contact Form Submission -> WhatsApp Link Generation (With KVKK Check)
+    // -----------------------------------------------------------------
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const whatsappNumber = "905396267015";
+      
+      const kvkkCheck = document.getElementById('kvkkCheck');
+      if (!kvkkCheck.checked) {
+        openLegalModal('kvkk');
+        return;
+      }
+
+      const name = document.getElementById('contactName').value;
+      const sector = document.getElementById('contactSector').value;
+      const email = document.getElementById('contactEmail').value;
+      const msg = document.getElementById('contactMessage').value;
+
+      const fullMessage = `Merhaba Mustafa Bey,%0A%0AWeb sitenizdeki teklif formunu doldurdum:%0A👤 *İsim/Marka:* ${encodeURIComponent(name)}%0A🏢 *Sektör:* ${encodeURIComponent(sector)}%0A📧 *E-Posta:* ${encodeURIComponent(email)}%0A📝 *Problem/Not:* ${encodeURIComponent(msg || 'Belirtilmedi')}%0A%0Aİnceleyip dönüş yapabilir misiniz?`;
+
+      window.open(`https://wa.me/${whatsappNumber}?text=${fullMessage}`, '_blank');
+    });
+
+    // -----------------------------------------------------------------
+    // 5. Legal Modal Content & Logic (KVKK, Çerez, Meta Disclaimer)
+    // -----------------------------------------------------------------
+    const legalTexts = {
+      kvkk: {
+        title: "🛡️ KVKK Aydınlatma Metni & Gizlilik Politikası",
+        body: `
+          <p><strong>6698 Sayılı Kişisel Verilerin Korunması Kanunu (KVKK) Uyarınca Bilgilendirme:</strong></p>
+          <p>Mustafa Ülger - Meta Ads & Growth Consultant olarak, web sitemiz üzerinden ilettiğiniz ad, soyad, e-posta adresi, telefon numarası ve işletme bilgileri yalnızca sizinle iletişime geçmek, reklam analiz simülasyonu sunmak ve teklif hazırlamak amacıyla saklanır.</p>
+          <p><strong>Veri İşleme Amaçları:</strong></p>
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Talep ettiğiniz reklam hesabının ön analizini gerçekleştirmek.</li>
+            <li>İletişim taleplerinize WhatsApp veya e-posta yoluyla yanıt vermek.</li>
+            <li>Hizmet kalitemizi ve site deneyimini iyileştirmek.</li>
+          </ul>
+          <p>Kişisel verileriniz hiçbir koşulda 3. taraf kurum veya kişilerle satılmaz, kiralanmaz veya izinsiz paylaşılmaz.</p>
+        `
+      },
+      cookie: {
+        title: "🍪 Çerez (Cookie) Kullanımı Politikası",
+        body: `
+          <p><strong>Çerez Kullanım Amaçlarımız:</strong></p>
+          <p>Sitemizde kullanıcı deneyimini iyileştirmek, ziyaretçi trafiğini analiz etmek ve dijital reklam dönüşümlerini ölçümlemek amacıyla çerezler (cookies) kullanılmaktadır.</p>
+          <p><strong>Kullanılan Takip Teknolojileri:</strong></p>
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>Meta Pixel & CAPI:</strong> Facebook ve Instagram reklamlarımızın performansını ve dönüşümlerini anonim olarak ölçer.</li>
+            <li><strong>Google Analytics 4 & GTM:</strong> Sitedeki sayfa ziyaretlerini ve etkileşimleri analiz eder.</li>
+            <li><strong>Yandex Metrica:</strong> Tıklama haritası (Heatmap) ve genel kullanıcı navigasyonunu iyileştirmemizi sağlar.</li>
+          </ul>
+          <p>Tarayıcı ayarlarınız üzerinden dilediğiniz zaman çerezleri engelleyebilir veya silebilirsiniz.</p>
+        `
+      },
+      terms: {
+        title: "⚖️ Kullanım Koşulları ve Yasal İkazlar",
+        body: `
+          <p><strong>Meta Platforms, Inc. Sorumluluk Reddi:</strong></p>
+          <p>Bu web sitesi Facebook Inc., Instagram veya Meta Platforms, Inc. ile doğrudan bağlı, ilişkili, yetkilendirilmiş veya onaylanmış bir site değildir. Facebook ve Instagram, Meta Platforms, Inc.'in tescilli ticari markalarıdır.</p>
+          <p><strong>Simülasyon ve Hesaplama Uyarısı:</strong></p>
+          <p>Sitede sunulan ROAS Simülatörü ve ciro tahminleri sektör benchmark ortalamalarına göre hesaplanan tahmini göstergelerdir. Gerçek reklam sonuçları ürün marjı, pazar dinamikleri ve stok durumuna göre değişiklik gösterebilir.</p>
+        `
+      }
+    };
+
+    function openLegalModal(type) {
+      const modal = document.getElementById('legalModal');
+      const title = document.getElementById('modalTitle');
+      const body = document.getElementById('modalBody');
+
+      if (legalTexts[type]) {
+        title.innerHTML = legalTexts[type].title;
+        body.innerHTML = legalTexts[type].body;
+        modal.classList.remove('hidden');
+      }
+    }
+
+    function closeLegalModal() {
+      document.getElementById('legalModal').classList.add('hidden');
+    }
+
+    // Modal click out to dismiss
+    document.getElementById('legalModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeLegalModal();
+      }
+    });
+
+    // -----------------------------------------------------------------
+    // 6. ROAS Simulator & Dynamic Chart.js Initialization
+    // -----------------------------------------------------------------
+    let growthChartInstance = null;
+
+    const sectorMultipliers = {
+      ecommerce: { cpm: 65, ctr: 1.8, convRate: 0.016, name: 'E-ticaret / Butik' },
+      dietitian: { cpm: 75, ctr: 2.2, convRate: 0.028, name: 'Diyetisyen / Klinik' },
+      marketplace: { cpm: 55, ctr: 1.5, convRate: 0.014, name: 'Pazaryeri Geçişi' },
+      service: { cpm: 80, ctr: 2.0, convRate: 0.025, name: 'Hizmet / B2B' }
+    };
+
+    // Custom Chart Plugin: Render exact numeric values on top of bars
+    const barTopLabelsPlugin = {
+      id: 'barTopLabels',
+      afterDatasetsDraw(chart) {
+        const { ctx } = chart;
+        chart.data.datasets.forEach((dataset, datasetIndex) => {
+          const meta = chart.getDatasetMeta(datasetIndex);
+          meta.data.forEach((bar, index) => {
+            const val = dataset.data[index];
+            if (val !== undefined && val !== null) {
+              const formattedVal = '₺' + Math.round(val).toLocaleString('tr-TR');
+              ctx.save();
+              ctx.fillStyle = document.documentElement.classList.contains('dark') ? '#F8FAFC' : '#0F172A';
+              ctx.font = 'bold 13px Plus Jakarta Sans, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'bottom';
+              ctx.fillText(formattedVal, bar.x, bar.y - 6);
+              ctx.restore();
+            }
+          });
+        });
+      }
+    };
+
+    function initGrowthChart() {
+      const ctx = document.getElementById('growthChart').getContext('2d');
+      growthChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Aylık Reklam Bütçesi', 'Tahmini Ciro Getirisi'],
+          datasets: [{
+            label: 'Tutar (TL)',
+            data: [25000, 94350],
+            backgroundColor: ['#64748B', '#0062FF'],
+            borderRadius: 10,
+            barThickness: 48
+          }]
+        },
+        plugins: [barTopLabelsPlugin],
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          layout: {
+            padding: {
+              top: 28
+            }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return 'Tutar: ₺' + Math.round(context.parsed.y).toLocaleString('tr-TR');
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              suggestedMax: 110000,
+              grid: { color: 'rgba(148, 163, 184, 0.12)' },
+              ticks: {
+                color: '#64748B',
+                callback: function(val) { return '₺' + (val / 1000) + 'k'; }
+              }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { color: '#475569', font: { weight: 'bold' } }
+            }
+          }
+        }
+      });
+    }
+
+    function calculateGrowth() {
+      const sectorKey = document.getElementById('simSector').value;
+      const budget = parseFloat(document.getElementById('simBudgetInput').value);
+      const avgPrice = parseFloat(document.getElementById('simPriceInput').value);
+
+      const cpm = parseFloat(document.getElementById('cpmInput').value);
+      const ctr = parseFloat(document.getElementById('ctrInput').value);
+
+      const sectorData = sectorMultipliers[sectorKey] || sectorMultipliers.ecommerce;
+
+      const impressions = (budget / cpm) * 1000;
+      const clicks = impressions * (ctr / 100);
+      const orders = Math.round(clicks * sectorData.convRate);
+      const estimatedRevenue = Math.round(orders * avgPrice);
+      const roas = budget > 0 ? (estimatedRevenue / budget) : 0;
+
+      document.getElementById('simBudgetValue').innerText = '₺' + Math.round(budget).toLocaleString('tr-TR');
+      document.getElementById('simPriceValue').innerText = '₺' + Math.round(avgPrice).toLocaleString('tr-TR');
+      document.getElementById('cpmValue').innerText = '₺' + cpm;
+      document.getElementById('ctrValue').innerText = '%' + ctr.toFixed(2);
+
+      document.getElementById('simRevenueResult').innerText = '₺' + estimatedRevenue.toLocaleString('tr-TR');
+      document.getElementById('simRoasResult').innerText = roas.toFixed(2) + 'x';
+      
+      document.getElementById('simImpressionResult').innerText = Math.round(impressions).toLocaleString('tr-TR');
+      document.getElementById('simClicksResult').innerText = Math.round(clicks).toLocaleString('tr-TR');
+      document.getElementById('simOrdersResult').innerText = orders.toLocaleString('tr-TR');
+
+      if (growthChartInstance) {
+        growthChartInstance.data.datasets[0].data = [budget, estimatedRevenue];
+        const maxVal = Math.max(budget, estimatedRevenue);
+        growthChartInstance.options.scales.y.suggestedMax = maxVal * 1.22;
+        growthChartInstance.update();
+      }
+    }
+
+    document.getElementById('simSector').addEventListener('change', function() {
+      const sectorKey = this.value;
+      const defaults = sectorMultipliers[sectorKey] || sectorMultipliers.ecommerce;
+      document.getElementById('cpmInput').value = defaults.cpm;
+      document.getElementById('ctrInput').value = defaults.ctr;
+      calculateGrowth();
+    });
+
+    document.getElementById('simBudgetInput').addEventListener('input', calculateGrowth);
+    document.getElementById('simPriceInput').addEventListener('input', calculateGrowth);
+    document.getElementById('cpmInput').addEventListener('input', calculateGrowth);
+    document.getElementById('ctrInput').addEventListener('input', calculateGrowth);
+
+    document.getElementById('toggleAdvanced').addEventListener('click', function() {
+      const advBox = document.getElementById('advancedBox');
+      const arrow = document.getElementById('advancedArrow');
+      if (advBox.classList.contains('hidden')) {
+        advBox.classList.remove('hidden');
+        arrow.innerText = '▲';
+      } else {
+        advBox.classList.add('hidden');
+        arrow.innerText = '▼';
+      }
+    });
+
+    document.getElementById('simSubmitBtn').addEventListener('click', function() {
+      const whatsappNumber = "905396267015";
+      const sectorKey = document.getElementById('simSector').value;
+      const sectorName = sectorMultipliers[sectorKey].name;
+      const budget = document.getElementById('simBudgetValue').innerText;
+      const price = document.getElementById('simPriceValue').innerText;
+      const cpm = document.getElementById('cpmValue').innerText;
+      const ctr = document.getElementById('ctrValue').innerText;
+      const email = document.getElementById('simEmail').value;
+      const revenue = document.getElementById('simRevenueResult').innerText;
+      const roas = document.getElementById('simRoasResult').innerText;
+
+      if (!email || !email.includes('@')) {
+        openLegalModal('terms');
+        document.getElementById('simEmail').focus();
+        return;
+      }
+
+      const msg = `Merhaba Mustafa Bey,%0A%0ASitenizdeki Gerçekçi ROAS Simülatörünü kullandım:%0A🏢 *Sektör:* ${encodeURIComponent(sectorName)}%0A💰 *Aylık Bütçe:* ${encodeURIComponent(budget)}%0A🏷️ *Ürün/Hizmet Fiyatı:* ${encodeURIComponent(price)}%0A📊 *Tahmini Metrikler:* CPM ${encodeURIComponent(cpm)} | CTR ${encodeURIComponent(ctr)}%0A📧 *E-Posta Adresim:* ${encodeURIComponent(email)}%0A%0A🎯 *Hesaplanan Gerçekçi Sonuç:*%0A• Tahmini Ciro: ${encodeURIComponent(revenue)}%0A• Hedef ROAS: ${encodeURIComponent(roas)}%0A%0ABu stratejiyi işletmem için nasıl hayata geçirebiliriz?`;
+
+      window.open(`https://wa.me/${whatsappNumber}?text=${msg}`, '_blank');
+    });
+
+    // Initialize Engines On Load
+    window.addEventListener('DOMContentLoaded', () => {
+      initNetlikEngine();
+      initGrowthChart();
+      calculateGrowth();
+      handleScrollBackgroundTransition();
+    });
+  </script>
+</body>
+</html>
